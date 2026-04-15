@@ -181,19 +181,19 @@ PLOT_TEMPLATE = dict(
     )
 )
 
-ACCENT   = '#00d4ff'
-GREEN    = '#00ff88'
-ORANGE   = '#ff9f43'
-RED      = '#ff4757'
-PURPLE   = '#a29bfe'
-COLOURS  = [ACCENT, GREEN, ORANGE, RED, PURPLE, '#fd79a8']
+ACCENT = '#00d4ff'
+GREEN = '#00ff88'
+ORANGE = '#ff9f43'
+RED = '#ff4757'
+PURPLE = '#a29bfe'
+COLOURS = [ACCENT, GREEN, ORANGE, RED, PURPLE, '#fd79a8']
 
 # TARGETS 
 TARGETS = {
-    'hh_value':      28.50,
-    'bb_conv':       0.1800,
-    'mob_conv':      0.1420,
-    'tv_conv':       0.0580,
+    'hh_value': 28.50,
+    'bb_conv': 0.1800,
+    'mob_conv': 0.1420,
+    'tv_conv': 0.0580,
     'combined_conv': 0.3220
 }
 
@@ -201,15 +201,15 @@ TARGETS = {
 @st.cache_data
 def load_data(path):
     df = pd.read_csv(path)
-    df['total_new_sales']    = df['broadband'] + df['mobile'] + df['tv']
+    df['total_new_sales'] = df['broadband'] + df['mobile'] + df['tv']
     df['total_transactions'] = df['broadband'] + df['mobile'] + df['tv'] + df['regrades']
-    df['bb_conv']            = df['broadband'] / df['calls'].replace(0, np.nan)
-    df['mob_conv']           = df['mobile']    / df['calls'].replace(0, np.nan)
-    df['tv_conv']            = df['tv']        / df['calls'].replace(0, np.nan)
-    df['combined_conv']      = (df['broadband'] + df['mobile']) / df['calls'].replace(0, np.nan)
-    df['avg_hh_value']       = df['hh_value']  / df['hh_orders'].replace(0, np.nan)
-    df['products_per_hh']    = df['total_transactions'] / df['hh_orders'].replace(0, np.nan)
-    df['value_per_call']     = df['hh_value']  / df['calls'].replace(0, np.nan)
+    df['bb_conv'] = df['broadband'] / df['calls'].replace(0, np.nan)
+    df['mob_conv'] = df['mobile'] / df['calls'].replace(0, np.nan)
+    df['tv_conv'] = df['tv'] / df['calls'].replace(0, np.nan)
+    df['combined_conv'] = (df['broadband'] + df['mobile']) / df['calls'].replace(0, np.nan)
+    df['avg_hh_value'] = df['hh_value'] / df['hh_orders'].replace(0, np.nan)
+    df['products_per_hh'] = df['total_transactions'] / df['hh_orders'].replace(0, np.nan)
+    df['value_per_call'] = df['hh_value'] / df['calls'].replace(0, np.nan)
     return df
 
 @st.cache_data
@@ -225,23 +225,23 @@ def build_monthly(df):
         total_new_sales=('total_new_sales', 'sum'),
         total_transactions=('total_transactions', 'sum'),
     ).reset_index()
-    monthly['bb_conv']         = monthly['total_broadband'] / monthly['total_calls']
-    monthly['mob_conv']        = monthly['total_mobile']    / monthly['total_calls']
-    monthly['tv_conv']         = monthly['total_tv']        / monthly['total_calls']
-    monthly['combined_conv']   = (monthly['total_broadband'] + monthly['total_mobile']) / monthly['total_calls']
-    monthly['avg_hh_value']    = monthly['total_hh_value']  / monthly['total_hh_orders']
+    monthly['bb_conv'] = monthly['total_broadband'] / monthly['total_calls']
+    monthly['mob_conv'] = monthly['total_mobile'] / monthly['total_calls']
+    monthly['tv_conv'] = monthly['total_tv'] / monthly['total_calls']
+    monthly['combined_conv'] = (monthly['total_broadband'] + monthly['total_mobile']) / monthly['total_calls']
+    monthly['avg_hh_value'] = monthly['total_hh_value'] / monthly['total_hh_orders']
     monthly['products_per_hh'] = monthly['total_transactions'] / monthly['total_hh_orders']
-    monthly['value_per_call']  = monthly['total_hh_value']  / monthly['total_calls']
-    monthly['bb_vs_target']       = monthly['bb_conv']      - TARGETS['bb_conv']
-    monthly['mob_vs_target']      = monthly['mob_conv']      - TARGETS['mob_conv']
-    monthly['tv_vs_target']       = monthly['tv_conv']       - TARGETS['tv_conv']
+    monthly['value_per_call'] = monthly['total_hh_value']  / monthly['total_calls']
+    monthly['bb_vs_target'] = monthly['bb_conv'] - TARGETS['bb_conv']
+    monthly['mob_vs_target'] = monthly['mob_conv'] - TARGETS['mob_conv']
+    monthly['tv_vs_target'] = monthly['tv_conv'] - TARGETS['tv_conv']
     monthly['combined_vs_target'] = monthly['combined_conv'] - TARGETS['combined_conv']
-    monthly['hh_value_vs_target'] = monthly['avg_hh_value']  - TARGETS['hh_value']
+    monthly['hh_value_vs_target'] = monthly['avg_hh_value'] - TARGETS['hh_value']
     return monthly
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-df      = load_data(os.path.join(BASE_DIR, 'data', 'clean', 'sales_data.csv'))
+df = load_data(os.path.join(BASE_DIR, 'data', 'clean', 'sales_data_synthetic.csv'))
 monthly = build_monthly(df)
 
 # SIDEBAR 
@@ -290,21 +290,21 @@ def styled_chart(fig, height=420):
 if page == "Overview":
     page_header("Centre Overview", "Monthly performance summary across all teams")
 
-    total_value   = monthly['total_hh_value'].sum()
-    total_bb      = monthly['total_broadband'].sum()
-    total_mob     = monthly['total_mobile'].sum()
-    total_tv      = monthly['total_tv'].sum()
-    total_hh      = monthly['total_hh_orders'].sum()
+    total_value = monthly['total_hh_value'].sum()
+    total_bb = monthly['total_broadband'].sum()
+    total_mob = monthly['total_mobile'].sum()
+    total_tv = monthly['total_tv'].sum()
+    total_hh = monthly['total_hh_orders'].sum()
     centre_comb_conv = (monthly['total_broadband'].sum() + monthly['total_mobile'].sum()) / monthly['total_calls'].sum()
 
     c1, c2, c3, c4, c5, c6 = st.columns(6)
-    c1.metric("Total HH Value",   f"£{total_value:,.0f}")
-    c2.metric("Combined Conv Rate",     f"{centre_comb_conv:.1%}",
+    c1.metric("Total HH Value", f"£{total_value:,.0f}")
+    c2.metric("Combined Conv Rate", f"{centre_comb_conv:.1%}",
               delta=f"{centre_comb_conv - TARGETS['combined_conv']:+.1%} vs target")
-    c3.metric("Broadband Sold",   f"{total_bb:,.0f}")
-    c4.metric("Mobile Sold",      f"{total_mob:,.0f}")
-    c5.metric("TV Sold",          f"{total_tv:,.0f}")
-    c6.metric("HH Orders",        f"{total_hh:,.0f}")
+    c3.metric("Broadband Sold", f"{total_bb:,.0f}")
+    c4.metric("Mobile Sold", f"{total_mob:,.0f}")
+    c5.metric("TV Sold", f"{total_tv:,.0f}")
+    c6.metric("HH Orders", f"{total_hh:,.0f}")
 
     st.markdown("<br>", unsafe_allow_html=True)
     col_left, col_right = st.columns([3, 2])
@@ -314,10 +314,10 @@ if page == "Overview":
         fig = go.Figure()
         fig.add_trace(go.Bar(name='Broadband', x=monthly['team'],
                              y=monthly['total_broadband'], marker_color=ACCENT))
-        fig.add_trace(go.Bar(name='Mobile',    x=monthly['team'],
+        fig.add_trace(go.Bar(name='Mobile', x=monthly['team'],
                              y=monthly['total_mobile'],    marker_color=GREEN))
-        fig.add_trace(go.Bar(name='TV',        x=monthly['team'],
-                             y=monthly['total_tv'],        marker_color=ORANGE))
+        fig.add_trace(go.Bar(name='TV', x=monthly['team'],
+                             y=monthly['total_tv'], marker_color=ORANGE))
         fig.update_layout(barmode='group', xaxis_tickangle=-30,
                           legend=dict(orientation='h', y=1.1))
         styled_chart(fig, height=380)
@@ -350,17 +350,17 @@ elif page == "Leaderboard":
     page_header("Team Leaderboard", "Rank teams across any performance metric")
 
     METRIC_OPTIONS = {
-        "Total HH Value (£)":       "total_hh_value",
-        "BB Conversion Rate":        "bb_conv",
-        "Mobile Conversion Rate":    "mob_conv",
-        "TV Conversion Rate":        "tv_conv",
-        "Combined BB+Mob Conv":      "combined_conv",
-        "Avg HH Value (£)":          "avg_hh_value",
-        "Products per Household":    "products_per_hh",
-        "Value per Call (£)":        "value_per_call"
+        "Total HH Value (£)": "total_hh_value",
+        "BB Conversion Rate": "bb_conv",
+        "Mobile Conversion Rate": "mob_conv",
+        "TV Conversion Rate": "tv_conv",
+        "Combined BB+Mob Conv": "combined_conv",
+        "Avg HH Value (£)": "avg_hh_value",
+        "Products per Household": "products_per_hh",
+        "Value per Call (£)": "value_per_call"
     }
 
-    selected_label  = st.selectbox("Rank by", list(METRIC_OPTIONS.keys()))
+    selected_label = st.selectbox("Rank by", list(METRIC_OPTIONS.keys()))
     selected_metric = METRIC_OPTIONS[selected_label]
     ranked = monthly.sort_values(selected_metric, ascending=True)
 
@@ -389,11 +389,11 @@ elif page == "Leaderboard":
     display.columns = ['Team', 'HH Value', 'BB Conv', 'Mob Conv',
                        'TV Conv', 'Combined', 'Avg HH £', 'Prod/HH', 'Val/Call']
     st.dataframe(display.style.format({
-        'HH Value':  '£{:,.2f}',
-        'BB Conv':   '{:.1%}', 'Mob Conv': '{:.1%}',
-        'TV Conv':   '{:.1%}', 'Combined': '{:.1%}',
-        'Avg HH £':  '£{:.2f}',
-        'Prod/HH':   '{:.2f}', 'Val/Call': '£{:.2f}'
+        'HH Value': '£{:,.2f}',
+        'BB Conv': '{:.1%}', 'Mob Conv': '{:.1%}',
+        'TV Conv': '{:.1%}', 'Combined': '{:.1%}',
+        'Avg HH £': '£{:.2f}',
+        'Prod/HH': '{:.2f}', 'Val/Call': '£{:.2f}'
     }).background_gradient(subset=['HH Value'], cmap='Blues'),
     use_container_width=True)
 
@@ -442,9 +442,9 @@ elif page == "Target Performance":
     page_header("Target Performance", "How each team tracks against monthly targets")
 
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("BB Target",       f"{TARGETS['bb_conv']:.1%}")
-    c2.metric("Mobile Target",   f"{TARGETS['mob_conv']:.1%}")
-    c3.metric("TV Target",       f"{TARGETS['tv_conv']:.1%}")
+    c1.metric("BB Target", f"{TARGETS['bb_conv']:.1%}")
+    c2.metric("Mobile Target", f"{TARGETS['mob_conv']:.1%}")
+    c3.metric("TV Target", f"{TARGETS['tv_conv']:.1%}")
     c4.metric("Combined Target", f"{TARGETS['combined_conv']:.1%}")
     c5.metric("HH Value Target", f"£{TARGETS['hh_value']:.2f}")
 
@@ -454,11 +454,11 @@ elif page == "Target Performance":
 
     variance_data = monthly.set_index('team').copy()
     normalised = pd.DataFrame({
-        'BB':       (variance_data['bb_conv']      - TARGETS['bb_conv'])      / TARGETS['bb_conv']      * 100,
-        'Mobile':   (variance_data['mob_conv']      - TARGETS['mob_conv'])     / TARGETS['mob_conv']     * 100,
-        'TV':       (variance_data['tv_conv']       - TARGETS['tv_conv'])      / TARGETS['tv_conv']      * 100,
+        'BB': (variance_data['bb_conv'] - TARGETS['bb_conv']) / TARGETS['bb_conv'] * 100,
+        'Mobile': (variance_data['mob_conv'] - TARGETS['mob_conv']) / TARGETS['mob_conv'] * 100,
+        'TV': (variance_data['tv_conv'] - TARGETS['tv_conv']) / TARGETS['tv_conv'] * 100,
         'Combined': (variance_data['combined_conv'] - TARGETS['combined_conv'])/ TARGETS['combined_conv'] * 100,
-        'HH Value': (variance_data['avg_hh_value']  - TARGETS['hh_value'])     / TARGETS['hh_value']     * 100,
+        'HH Value': (variance_data['avg_hh_value'] - TARGETS['hh_value']) / TARGETS['hh_value'] * 100,
     })
 
     fig = px.imshow(
@@ -475,19 +475,19 @@ elif page == "Target Performance":
 elif page == "Team Deep Dive":
     page_header("Team Deep Dive", "Detailed performance breakdown for a single team")
 
-    selected     = st.selectbox("Select team", sorted(df['team'].unique()))
-    team_df      = df[df['team'] == selected].sort_values('day').copy()
+    selected = st.selectbox("Select team", sorted(df['team'].unique()))
+    team_df = df[df['team'] == selected].sort_values('day').copy()
     team_monthly = monthly[monthly['team'] == selected].iloc[0]
 
     # KPI CARDS
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("Total HH Value",  f"£{team_monthly['total_hh_value']:,.2f}")
-    c2.metric("BB Conversion",   f"{team_monthly['bb_conv']:.1%}",
+    c1.metric("Total HH Value", f"£{team_monthly['total_hh_value']:,.2f}")
+    c2.metric("BB Conversion", f"{team_monthly['bb_conv']:.1%}",
               delta=f"{team_monthly['bb_vs_target']:+.1%} vs target")
-    c3.metric("Mobile Conv",     f"{team_monthly['mob_conv']:.1%}",
+    c3.metric("Mobile Conv", f"{team_monthly['mob_conv']:.1%}",
               delta=f"{team_monthly['mob_vs_target']:+.1%} vs target")
-    c4.metric("Products / HH",   f"{team_monthly['products_per_hh']:.2f}")
-    c5.metric("Value / Call",    f"£{team_monthly['value_per_call']:.2f}")
+    c4.metric("Products / HH", f"{team_monthly['products_per_hh']:.2f}")
+    c5.metric("Value / Call", f"£{team_monthly['value_per_call']:.2f}")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -521,8 +521,8 @@ elif page == "Team Deep Dive":
     # PRODUCT MIX DONUT
     with col_right:
         st.markdown("#### Product Mix")
-        mix_labels  = ['Broadband', 'Mobile', 'TV']
-        mix_values  = [
+        mix_labels = ['Broadband', 'Mobile', 'TV']
+        mix_values = [
             team_monthly['total_broadband'],
             team_monthly['total_mobile'],
             team_monthly['total_tv']
@@ -569,17 +569,17 @@ elif page == "ML Insights":
     page_header("ML Insights", "K-means clustering (k=3) — teams grouped by performance profile")
 
     features = ['bb_conv', 'mob_conv', 'tv_conv', 'avg_hh_value', 'products_per_hh', 'value_per_call']
-    X        = monthly[features].copy()
-    scaler   = StandardScaler()
+    X = monthly[features].copy()
+    scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    kmeans   = KMeans(n_clusters=3, random_state=42, n_init=10)
+    kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
     monthly['cluster'] = kmeans.fit_predict(X_scaled)
 
     cluster_names = {0: 'Efficient Converters', 1: 'Core Performers', 2: 'High Bundlers'}
     cluster_cols  = {
         'Efficient Converters': ACCENT,
-        'Core Performers':      GREEN,
-        'High Bundlers':        ORANGE
+        'Core Performers': GREEN,
+        'High Bundlers': ORANGE
     }
     monthly['cluster_label'] = monthly['cluster'].map(cluster_names)
 
@@ -603,8 +603,8 @@ elif page == "ML Insights":
         st.markdown("#### Cluster Descriptions")
         descriptions = {
             'Efficient Converters': ('Highest value per call. Convert calls into revenue most efficiently.', ACCENT),
-            'Core Performers':      ('Solid across all metrics. Largest cluster and the centre baseline.', GREEN),
-            'High Bundlers':        ('Exceptional products per HH. Maximise value per household interaction.', ORANGE)
+            'Core Performers': ('Solid across all metrics. Largest cluster and the centre baseline.', GREEN),
+            'High Bundlers': ('Exceptional products per HH. Maximise value per household interaction.', ORANGE)
         }
         for label, (desc, colour) in descriptions.items():
             teams_in_cluster = monthly[monthly['cluster_label'] == label]['team'].tolist()

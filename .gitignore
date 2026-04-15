@@ -1,16 +1,8 @@
-# Raw data 
 data/raw/
-
-# Real notebooks
+data/clean/sales_data.csv
+data/clean/*.png
 notebooks/
-
-# Python cache
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-
-# Environment
 .env
-
-# Avoiding images
-data/clean/*.png
