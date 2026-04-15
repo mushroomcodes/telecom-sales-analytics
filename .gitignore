@@ -1,0 +1,13 @@
+# Raw data - never commit
+data/raw/
+
+# Real notebooks
+notebooks/
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environment
+.env
