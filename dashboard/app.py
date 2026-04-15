@@ -394,8 +394,7 @@ elif page == "Leaderboard":
         'TV Conv': '{:.1%}', 'Combined': '{:.1%}',
         'Avg HH £': '£{:.2f}',
         'Prod/HH': '{:.2f}', 'Val/Call': '£{:.2f}'
-    }).background_gradient(subset=['HH Value'], cmap='Blues'),
-    use_container_width=True)
+    }), use_container_width=True)
 
 # PAGE 3: DAILY TRENDS 
 elif page == "Daily Trends":
