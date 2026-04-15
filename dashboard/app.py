@@ -288,7 +288,7 @@ def styled_chart(fig, height=420):
 
 # PAGE 1: OVERVIEW 
 if page == "Overview":
-    page_header("Centre Overview", "Monthly performance summary across all teams")
+    page_header("Centre Overview", "Monthly performance summary across all teams - All numbers and names in this dashboard are fake to protect real data")
 
     total_value = monthly['total_hh_value'].sum()
     total_bb = monthly['total_broadband'].sum()
@@ -394,7 +394,7 @@ elif page == "Leaderboard":
         'TV Conv': '{:.1%}', 'Combined': '{:.1%}',
         'Avg HH £': '£{:.2f}',
         'Prod/HH': '{:.2f}', 'Val/Call': '£{:.2f}'
-    }), use_container_width=True)
+    }), use_container_width=True)   
 
 # PAGE 3: DAILY TRENDS 
 elif page == "Daily Trends":
