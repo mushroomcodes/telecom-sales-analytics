@@ -1,4 +1,4 @@
-# Raw data - never commit
+# Raw data 
 data/raw/
 
 # Real notebooks
@@ -11,3 +11,6 @@ __pycache__/
 
 # Environment
 .env
+
+# Avoiding images
+data/clean/*.png
