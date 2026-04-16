@@ -1,8 +1,8 @@
-# EE Telecom Sales Analytics
+# Telecom Sales Analytics
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://telecom-sales-analytics.streamlit.app/)
 
-> While working at EE, I created this end-to-end data analytics and machine learning project for real operational data to improve efficiency and business strategies across 10 sales teams with over 120 advisors, which is reproduced here with synthetic data.
+> While working at a telecom sales centre, I created this end-to-end data analytics and machine learning project for real operational data to improve efficiency and business strategies across 10 sales teams with over 120 advisors, which is reproduced here with synthetic data.
 
 ---
 
@@ -18,7 +18,7 @@ This project was built with Streamlit. You can interactively explore team perfor
 
 This project summarises the full analytics workflow for a telecoms call centre with 8 sales teams across a 28-day reporting period. Each team sells broadband, mobile, and TV products, and performance is tracked against daily and monthly targets.
 
-The analysis was originally conducted on real operational data at EE. The monthly dataset of the data from each team was created every month using KPI trackers I made in Excel. All data presented here is synthetically generated to reflect realistic call centre sales patterns while preserving no real employee or business information.
+The analysis was originally conducted on real operational data. The monthly dataset of the data from each team was created every month using KPI trackers I made in Excel. All data presented here is synthetically generated to reflect realistic call centre sales patterns while preserving no real employee or business information.
 
 **Business questions:**
 - Which teams are performing above or below target, and on which metrics?
